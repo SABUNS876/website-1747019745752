@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>Topup Codashop</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 1em;
+  }
+  .container {
+    background-color: rgba(0,0,0,0.7);
+    border-radius: 16px;
+    max-width: 400px;
+    width: 100%;
+    padding: 2em;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  }
+  h1 {
+    font-weight: 600;
+    font-size: 1.8rem;
+    margin-bottom: 1em;
+    text-align: center;
+    letter-spacing: 1.2px;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+  }
+  input, select, button {
+    width: 100%;
+    padding: 0.8em;
+    margin-bottom: 1.2em;
+    border-radius: 10px;
+    border: none;
+    font-size: 1em;
+    font-weight: 400;
+  }
+  input, select {
+    background-color: #2c2f52;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  input:focus, select:focus {
+    outline: 2px solid #8b5cf6;
+    background-color: #3c3f68;
+  }
+  button {
+    background: linear-gradient(90deg, #8b5cf6, #4c1d95);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: background 0.3s ease;
+  }
+  button:hover {
+    background: linear-gradient(90deg, #4c1d95, #8b5cf6);
+  }
+  .result {
+    background-color: #3c3f68;
+    padding: 1em;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: 600;
+    display: none;
+  }
+  @media (max-width: 400px) {
+    .container {
+      padding: 1.2em;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Topup Codashop</h1>
+    <form id="topupForm">
+      <label for="game">Pilih Game</label>
+      <select id="game" required>
+        <option value="" disabled selected>Pilih game</option>
+        <option value="mobile_legend">Mobile Legends</option>
+        <option value="free_fire">Free Fire</option>
+        <option value="pubg_mobile">PUBG Mobile</option>
+        <option value="valorant">Valorant</option>
+      </select>
+
+      <label for="playerId">Player ID</label>
+      <input type="text" id="playerId" placeholder="Masukkan Player ID" required />
+
+      <label for="amount">Jumlah Topup (Rp)</label>
+      <select id="amount" required>
+        <option value="" disabled selected>Pilih nominal</option>
+        <option value="10000">10,000</option>
+        <option value="25000">25,000</option>
+        <option value="50000">50,000</option>
+        <option value="100000">100,000</option>
+      </select>
+      <button type="submit">Proses Topup</button>
+    </form>
+    <div class="result" id="result"></div>
+  </div>
+
+<script>
+  // Note: Codashop API keys and endpoints are private and not publicly documented.
+  // This demo uses a placeholder API endpoint and key.
+  // Replace these with your own API key and real endpoint to work.
+  const API_KEY = 'YOUR_API_KEY_HERE'; // Put the actual API key here
+
+  // Placeholder API URL for demonstration (this will NOT actually work)
+  const API_ENDPOINT = 'https://api.codashop.com/v1/topup';
+
+  const form = document.getElementById('topupForm');
+  const resultDiv = document.getElementById('result');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    resultDiv.style.display = 'none';
+    resultDiv.textContent = '';
+
+    const game = form.game.value;
+    const playerId = form.playerId.value.trim();
+    const amount = form.amount.value;
+
+    if (!game || !playerId || !amount) {
+      alert('Semua field harus diisi!');
+      return;
+    }
+
+    resultDiv.style.display = 'block';
+    resultDiv.textContent = 'Memproses topup...';
+
+    try {
+      // Mock request simulation - replace with real fetch call to your backend or Codashop API
+      /*
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${API_KEY}`
+        },
+        body: JSON.stringify({
+          game: game,
+          playerId: playerId,
+          amount: amount
+        })
+      });
+      const data = await response.json();
+      */
+
+      // Simulate response for demo
+      await new Promise(resolve => setTimeout(resolve, 1500)); // simulate network delay
+
+      // Demo success
+      const data = {
+        success: true,
+        orderId: 'CDS' + Math.floor(Math.random() * 1000000),
+        message: 'Topup berhasil! Mohon cek in-game saldo Anda.'
+      };
+
+      if (data.success) {
+        resultDiv.style.color = '#a1e887';
+        resultDiv.innerHTML = `<strong>Berhasil!</strong><br/>Order ID: ${data.orderId}<br/>Pesan: ${data.message}`;
+      } else {
+        resultDiv.style.color = '#f87171';
+        resultDiv.textContent = 'Topup gagal: ' + (data.message || 'Terjadi kesalahan.');
+      }
+    } catch (error) {
+      resultDiv.style.color = '#f87171';
+      resultDiv.textContent = 'Terjadi kesalahan saat memproses topup. Coba lagi nanti.';
+    }
+  });
+</script>
+</body>
+</html>
+
+```
